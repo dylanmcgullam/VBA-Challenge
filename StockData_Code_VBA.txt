@@ -1,0 +1,179 @@
+Sub stockdata():
+    
+    For Each ws In Worksheets
+    
+        Dim Worksheet As String
+        Dim i As Long
+        Dim j As Long
+        Dim Number_of_Ticks As Long
+        Dim LastRowA As Long
+        Dim LastRowI As Long
+        Dim Percent_Change As Double
+        Dim Greatest_Increase As Double
+        Dim Greatest_Decrease As Double
+        Dim Greatest_Volume As Double
+        
+        
+        Worksheet = ws.Name
+        
+        
+        ws.Cells(1, 9).Value = "Ticker"
+        ws.Cells(1, 10).Value = "Yearly Change"
+        ws.Cells(1, 11).Value = "Percent Change"
+        ws.Cells(1, 12).Value = "Total Stock Volume"
+        ws.Cells(1, 17).Value = "Ticker"
+        ws.Cells(1, 18).Value = "Value"
+        ws.Cells(2, 16).Value = "Greatest % increase"
+        ws.Cells(3, 16).Value = "Greatest % decrease"
+        ws.Cells(4, 16).Value = "Greatest Total Volume"
+        
+        
+        Number_of_Ticks = 2
+        
+        
+        j = 2
+        
+        
+        LastRowA = ws.Cells(Rows.Count, 1).End(xlUp).Row
+            
+        
+            For i = 2 To LastRowA
+            
+            
+            
+                If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+                ws.Cells(Number_of_Ticks, 9).Value = ws.Cells(i, 1).Value
+                ws.Cells(Number_of_Ticks, 10).Value = ws.Cells(i, 6).Value - ws.Cells(j, 3).Value
+                
+                
+                
+                
+                    If ws.Cells(Number_of_Ticks, 10).Value < 0 Then
+                    ws.Cells(Number_of_Ticks, 10).Interior.ColorIndex = 3
+                    
+                    
+                    
+                    Else
+                    
+                    ws.Cells(Number_of_Ticks, 10).Interior.ColorIndex = 4
+                    
+                    
+                    End If
+                    
+                    
+                    
+                    If ws.Cells(j, 3).Value <> 0 Then
+                    Percent_Change = ((ws.Cells(i, 6).Value - ws.Cells(j, 3).Value) / ws.Cells(j, 3).Value)
+                    ws.Cells(Number_of_Ticks, 11).Value = Format(Percent_Change, "Percent")
+                    
+                    
+                    Else
+                    
+                    ws.Cells(Number_of_Ticks, 11).Value = Format(0, "Percent")
+                    
+                    End If
+                    
+                    
+                
+            ws.Cells(Number_of_Ticks, 12).Value = WorksheetFunction.Sum(Range(ws.Cells(j, 7), ws.Cells(i, 7)))
+                
+                
+                
+            Number_of_Ticks = Number_of_Ticks + 1
+                
+                
+                
+            j = i + 1
+                
+                
+                
+            End If
+                
+                
+                
+            Next i
+            
+            
+            
+            
+            
+            
+      LastRowI = ws.Cells(Rows.Count, 9).End(xlUp).Row
+        
+            
+            
+      Greatest_Volume = ws.Cells(2, 12).Value
+      Greatest_Increase = ws.Cells(2, 11).Value
+      Greatest_Decrease = ws.Cells(2, 11).Value
+  
+        
+        
+            For i = 2 To LastRowI
+            
+            
+            
+                If ws.Cells(i, 12).Value > Greatest_Volume Then
+                Greatest_Volume = ws.Cells(i, 12).Value
+                ws.Cells(4, 18).Value = ws.Cells(i, 9).Value
+                
+                
+                Else
+                
+                
+                Greatest_Volume = Greatest_Volume
+                
+                
+                End If
+                
+                
+                
+                
+                If ws.Cells(i, 11).Value > Greatest_Increase Then
+                Greatest_Increase = ws.Cells(i, 11).Value
+                ws.Cells(2, 18).Value = ws.Cells(i, 9).Value
+                
+                
+                
+                Else
+                
+                Greatest_Increase = Greatest_Increase
+                
+                
+                End If
+                
+                
+                
+                
+                If ws.Cells(i, 11).Value < Greatest_Decrease Then
+                Greatest_Decrease = ws.Cells(i, 11).Value
+                ws.Cells(3, 18).Value = ws.Cells(i, 9).Value
+                
+                
+                Else
+                
+                
+                Greatest_Decrease = Greatest_Decrease
+                
+                
+                End If
+                
+                
+            ws.Cells(2, 18).Value = Format(Greatest_Increase, "Percent")
+            ws.Cells(3, 18).Value = Format(Greatest_Decrease, "Percent")
+            ws.Cells(4, 18).Value = Format(Greatest_Volume, "Scientific")
+            
+            Next i
+            
+        
+            
+    Next ws
+
+
+
+End Sub
+        
+
+                
+            
+           
+   
